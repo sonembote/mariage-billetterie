@@ -4,14 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Billetterie Mariage</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 16px; }
-    a { text-decoration: none; color: #0b5ed7; }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>Billetterie electronique - Mariage</h1>
-  <p>Bienvenue. Utilise l'espace admin pour creer et suivre les billets.</p>
-  <p><a href="/admin">Aller a l'administration</a></p>
+  <div class="page">
+    <header class="site-header">
+      <div class="brand">MZoulla<span>Événement privé</span></div>
+    </header>
+    <div class="container container--narrow">
+      <div class="card hero">
+        <h1>Billetterie électronique</h1>
+        <p>Accueil invités et gestion des billets pour votre célébration.</p>
+        <a class="btn btn--primary" href="/admin">Espace administration</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

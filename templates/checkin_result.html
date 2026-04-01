@@ -3,22 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resultat verification</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 760px; margin: 30px auto; padding: 0 16px; }
-    .ok { color: #0a7a2f; font-weight: bold; }
-    .warn { color: #a00; font-weight: bold; }
-  </style>
+  <title>Résultat vérification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>Verification billet</h1>
-  <p>Invite: <strong>{{ ticket.guest_name }}</strong></p>
-  {% if already_used %}
-    <p class="warn">Billet deja utilise.</p>
-    <p>Heure precedente: {{ ticket.used_at }}</p>
-  {% else %}
-    <p class="ok">Entree validee avec succes.</p>
-    <p>Heure: {{ ticket.used_at }}</p>
-  {% endif %}
+  <div class="page">
+    <header class="site-header">
+      <div class="brand">Contrôle d’accès<span>Résultat</span></div>
+    </header>
+    <div class="container container--narrow">
+      <div class="card">
+        <h1>Vérification</h1>
+        <p style="font-size: 1.05rem;"><strong>{{ ticket.guest_name }}</strong></p>
+        {% if already_used %}
+        <div class="alert alert--warning" role="status">
+          Ce billet a déjà été utilisé.
+        </div>
+        <p class="hint">Heure précédente : <strong>{{ ticket.used_at }}</strong></p>
+        {% else %}
+        <div class="alert alert--success" role="status">
+          Entrée enregistrée avec succès.
+        </div>
+        <p class="hint">Heure : <strong>{{ ticket.used_at }}</strong></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </body>
 </html>

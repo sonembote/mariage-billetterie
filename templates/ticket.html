@@ -3,24 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Billet {{ ticket.guest_name }}</title>
-  <style>
-    body { font-family: Georgia, "Times New Roman", serif; max-width: 760px; margin: 30px auto; padding: 0 16px; text-align: center; background: #faf7f2; }
-    .card { border: 1px solid #e8dfd3; border-radius: 12px; padding: 24px; background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
-    h1 { color: #7a4b3a; }
-    img { width: 250px; height: 250px; border-radius: 8px; border: 1px solid #eadfce; }
-    .btn { display: inline-block; margin-top: 12px; padding: 10px 14px; border-radius: 8px; background: #7a4b3a; color: #fff; text-decoration: none; }
-  </style>
+  <title>Billet — {{ ticket.guest_name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="card">
-    <h1>Billet de mariage</h1>
-    <h2>{{ ticket.guest_name }}</h2>
-    <p>Statut: <strong>{{ ticket.status }}</strong></p>
-    <p>Presente ce QR code a l'entree:</p>
-    <img src="/qr/{{ ticket.token }}" alt="QR code billet">
-    <br>
-    <a class="btn" href="/ticket/{{ ticket.token }}/pdf" target="_blank">Imprimer / PDF</a>
+  <div class="ticket-page">
+    <div class="card ticket-card">
+      <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-muted); margin-bottom: 0.25rem;">Invitation</p>
+      <h1>Billet de mariage</h1>
+      <div class="divider"></div>
+      <p class="ticket-name">{{ ticket.guest_name }}</p>
+      <p>
+        {% if ticket.status == 'used' %}
+          <span class="badge badge--ok">Entrée enregistrée</span>
+        {% else %}
+          <span class="badge badge--pending">Valable à l’entrée</span>
+        {% endif %}
+      </p>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem;">Présentez ce QR code à l’accueil.</p>
+      <div class="ticket-card__qr">
+        <img src="/qr/{{ ticket.token }}" alt="QR code du billet" width="260" height="260">
+      </div>
+      <a class="btn btn--primary" href="/ticket/{{ ticket.token }}/pdf" target="_blank" rel="noopener">Imprimer ou enregistrer en PDF</a>
+    </div>
   </div>
 </body>
 </html>

@@ -3,76 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard billets</title>
-  <style>
-    body { font-family: Georgia, "Times New Roman", serif; margin: 0; background: #faf7f2; color: #2d2a26; }
-    .wrap { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-    .panel { background: #fff; border: 1px solid #e8dfd3; border-radius: 12px; padding: 20px; margin-bottom: 18px; box-shadow: 0 6px 18px rgba(0,0,0,0.04); }
-    h1 { margin-top: 0; color: #7a4b3a; }
-    h2 { color: #7a4b3a; font-size: 20px; margin-top: 0; }
-    input, button { padding: 10px; font-size: 14px; border-radius: 8px; border: 1px solid #d7c9b6; }
-    button { background: #7a4b3a; color: white; cursor: pointer; }
-    button:hover { opacity: 0.92; }
-    table { border-collapse: collapse; width: 100%; margin-top: 16px; background: #fff; }
-    th, td { border: 1px solid #eadfce; padding: 10px; text-align: left; }
-    th { background: #f4ece1; }
-    .used { color: #0a7a2f; font-weight: bold; }
-    .not-used { color: #b26b00; font-weight: bold; }
-    a { color: #7a4b3a; }
-  </style>
+  <title>Tableau de bord — Billets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="wrap">
-  <div class="panel">
-  <h1>Dashboard billetterie mariage</h1>
-  <p>Ajoute des invites, importe une liste CSV, puis ouvre chaque billet avec QR.</p>
-  </div>
+  <div class="page">
+    <header class="site-header">
+      <div class="brand">MZoulla<span>Gestion des billets</span></div>
+      <a href="/">← Accueil</a>
+    </header>
+    <div class="container">
+      <div class="panel">
+        <h1 class="panel__title">Tableau de bord</h1>
+        <p class="panel__lead">Ajoutez des invités, importez une liste CSV, consultez les billets et QR codes.</p>
+      </div>
 
-  <div class="panel">
-  <h2>Creation manuelle</h2>
-  <form method="post" action="/create-ticket">
-    <input type="hidden" name="password" value="{{ password }}">
-    <label>Nom de l'invite:</label>
-    <input type="text" name="guest_name" required>
-    <button type="submit">Creer billet</button>
-  </form>
-  </div>
+      <div class="panel">
+        <h2>Création manuelle</h2>
+        <form method="post" action="/create-ticket" class="form-stack">
+          <input type="hidden" name="password" value="{{ password }}">
+          <div class="form-group">
+            <label class="form-label" for="guest_name">Nom de l’invité</label>
+            <input class="form-control" type="text" id="guest_name" name="guest_name" required placeholder="ex. Marie Dupont" autocomplete="off">
+          </div>
+          <button type="submit" class="btn btn--primary">Créer le billet</button>
+        </form>
+      </div>
 
-  <div class="panel">
-  <h2>Import CSV</h2>
-  <form method="post" action="/import-csv" enctype="multipart/form-data">
-    <input type="hidden" name="password" value="{{ password }}">
-    <input type="file" name="csv_file" accept=".csv" required>
-    <button type="submit">Importer</button>
-  </form>
-  <p>Format supporte: une colonne avec les noms (header optionnel: guest_name).</p>
-  </div>
+      <div class="panel">
+        <h2>Import CSV</h2>
+        <form method="post" action="/import-csv" enctype="multipart/form-data" class="form-stack">
+          <input type="hidden" name="password" value="{{ password }}">
+          <div class="form-group">
+            <label class="form-label" for="csv_file">Fichier</label>
+            <input class="form-control form-control--file" type="file" id="csv_file" name="csv_file" accept=".csv" required>
+          </div>
+          <button type="submit" class="btn btn--primary">Importer</button>
+        </form>
+        <p class="hint">Une colonne de noms ; en-tête optionnel : <code>guest_name</code>, <code>name</code> ou <code>invite</code>.</p>
+      </div>
 
-  <div class="panel">
-  <h2>Billets crees</h2>
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Invite</th>
-      <th>Statut</th>
-      <th>Heure d'entree</th>
-      <th>Billet</th>
-      <th>QR</th>
-      <th>Export</th>
-    </tr>
-    {% for t in tickets %}
-    <tr>
-      <td>{{ t.id }}</td>
-      <td>{{ t.guest_name }}</td>
-      <td class="{{ 'used' if t.status == 'used' else 'not-used' }}">{{ t.status }}</td>
-      <td>{{ t.used_at if t.used_at else '-' }}</td>
-      <td><a href="/ticket/{{ t.token }}" target="_blank">Voir</a></td>
-      <td><a href="/qr/{{ t.token }}" target="_blank">Image</a></td>
-      <td><a href="/ticket/{{ t.token }}/pdf" target="_blank">Imprimer PDF</a></td>
-    </tr>
-    {% endfor %}
-  </table>
-  </div>
+      <div class="panel">
+        <h2>Billets</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Invité</th>
+                <th>Statut</th>
+                <th>Entrée</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for t in tickets %}
+              <tr>
+                <td>{{ t.id }}</td>
+                <td><strong>{{ t.guest_name }}</strong></td>
+                <td>
+                  {% if t.status == 'used' %}
+                    <span class="badge badge--ok">Utilisé</span>
+                  {% else %}
+                    <span class="badge badge--pending">En attente</span>
+                  {% endif %}
+                </td>
+                <td>{{ t.used_at if t.used_at else '—' }}</td>
+                <td>
+                  <a href="/ticket/{{ t.token }}" target="_blank" rel="noopener">Billet</a>
+                  · <a href="/qr/{{ t.token }}" target="_blank" rel="noopener">QR</a>
+                  · <a href="/ticket/{{ t.token }}/pdf" target="_blank" rel="noopener">PDF</a>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="5" style="text-align:center; color: var(--color-text-muted); padding: 2rem;">Aucun billet pour le moment.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 </html>
