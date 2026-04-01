@@ -17,8 +17,12 @@
   <p>Deja utilise a: {{ ticket.used_at }}</p>
   {% endif %}
 
+  {% if ticket.status != 'used' %}
   <form method="post">
     <button type="submit">Valider l'entree</button>
   </form>
+  {% else %}
+  <p><strong>Entree deja validee.</strong> Aucune action supplementaire.</p>
+  {% endif %}
 </body>
 </html>
