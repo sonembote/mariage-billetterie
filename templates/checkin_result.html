@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultat verification</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 760px; margin: 30px auto; padding: 0 16px; }
+    .ok { color: #0a7a2f; font-weight: bold; }
+    .warn { color: #a00; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Verification billet</h1>
+  <p>Invite: <strong>{{ ticket.guest_name }}</strong></p>
+  {% if already_used %}
+    <p class="warn">Billet deja utilise.</p>
+    <p>Heure precedente: {{ ticket.used_at }}</p>
+  {% else %}
+    <p class="ok">Entree validee avec succes.</p>
+    <p>Heure: {{ ticket.used_at }}</p>
+  {% endif %}
+</body>
+</html>

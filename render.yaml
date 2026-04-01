@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: mariage-billetterie
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: WEDDING_ADMIN_PASSWORD
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mariage-bdd
+          property: connectionString
+databases:
+  - name: mariage-bdd
+    plan: free

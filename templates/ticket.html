@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billet {{ ticket.guest_name }}</title>
+  <style>
+    body { font-family: Georgia, "Times New Roman", serif; max-width: 760px; margin: 30px auto; padding: 0 16px; text-align: center; background: #faf7f2; }
+    .card { border: 1px solid #e8dfd3; border-radius: 12px; padding: 24px; background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+    h1 { color: #7a4b3a; }
+    img { width: 250px; height: 250px; border-radius: 8px; border: 1px solid #eadfce; }
+    .btn { display: inline-block; margin-top: 12px; padding: 10px 14px; border-radius: 8px; background: #7a4b3a; color: #fff; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Billet de mariage</h1>
+    <h2>{{ ticket.guest_name }}</h2>
+    <p>Statut: <strong>{{ ticket.status }}</strong></p>
+    <p>Presente ce QR code a l'entree:</p>
+    <img src="/qr/{{ ticket.token }}" alt="QR code billet">
+    <br>
+    <a class="btn" href="/ticket/{{ ticket.token }}/pdf" target="_blank">Imprimer / PDF</a>
+  </div>
+</body>
+</html>

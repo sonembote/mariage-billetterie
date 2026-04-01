@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impression billet {{ ticket.guest_name }}</title>
+  <style>
+    body { font-family: Georgia, "Times New Roman", serif; margin: 30px; color: #2d2a26; }
+    .card { max-width: 700px; margin: 0 auto; border: 1px solid #d8c9b3; border-radius: 12px; padding: 24px; }
+    h1 { color: #7a4b3a; margin-top: 0; }
+    .muted { color: #666; font-size: 14px; }
+    .qr { text-align: center; margin: 20px 0; }
+    .qr img { width: 240px; height: 240px; }
+    @media print {
+      .no-print { display: none; }
+      body { margin: 0; }
+      .card { border: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Billet de Mariage</h1>
+    <p><strong>Invite:</strong> {{ ticket.guest_name }}</p>
+    <p><strong>Statut:</strong> {{ ticket.status }}</p>
+    <p><strong>Reference:</strong> {{ ticket.token }}</p>
+    {% if ticket.used_at %}
+      <p><strong>Entree validee a:</strong> {{ ticket.used_at }}</p>
+    {% endif %}
+    <div class="qr">
+      <img src="/qr/{{ ticket.token }}" alt="QR Code">
+      <p class="muted">Scanner ce QR code a l'entree</p>
+    </div>
+    <button class="no-print" onclick="window.print()">Imprimer / Enregistrer en PDF</button>
+  </div>
+</body>
+</html>
